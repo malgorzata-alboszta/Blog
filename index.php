@@ -1,21 +1,29 @@
 <?php
 
-ini_set('display_errors',1);
-ini_set('display_startup_errors',1);
-error_reporting(E_ALL);
+//ini_set('display_errors',1);
+//ini_set('display_startup_errors',1);
+//error_reporting(E_ALL);
 
-//load and initialize any global librares
-require_once 'model.php';
-require_once 'controller.php';
+require_once 'vendor/autoload.php';
 
-//route the request internally
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Debug\Debug;
 
-if ('/Blog/index.php' == $uri) {
-    list_action();
-} elseif ('/Blog/index.php/show' == $uri && isset($_GET['id'])){
-    show_action($_GET['id']);
+Debug::enable();
+
+$request = Request::createFromGlobals();
+
+$uri = $request->getPathInfo();
+if ('/' == $uri) {
+    $response = list_action();
+} elseif ('/show' == $uri && $request->query->has('id')){
+    $response = show_action($request->query->get('id'));
 } else {
-    header ('Status: 404 Not found');
-    echo '<html> <body> <h1> Page Not Found </h1> </body> </html>';
+    $html = '<hmtl><body><h1> Page Not Found </h1></body></html>';
+    $response = new Response($html, Response::HTTP_NOT_FOUND);
+    
 }
+
+//echo the headers and send the response
+$response->send();

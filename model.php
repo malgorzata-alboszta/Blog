@@ -34,7 +34,6 @@ function get_post_by_id($id)
     $link = open_database_connection();
     
     $idi = intval($id); //get the integer value of a varaible
-    var_dump($idi);
     $query = 'SELECT title, content FROM post WHERE id = '.$idi;
     $result = mysqli_query($link, $query);
     $row = mysqli_fetch_assoc($result);
