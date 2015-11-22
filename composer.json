@@ -1,9 +1,9 @@
 {
     "require": {
-        "symfony/symfony" : "2.8.*@dev"
+        "symfony/symfony" : "2.7.*"
     },
     
     "autoload" : {
-        "files": ["model.php", "controllers.php"]
+        "files": ["model.php", "controller.php"]
     }
 }
